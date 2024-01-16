@@ -26,6 +26,7 @@ Students| <a href="/addStudents">Add student</a>
 <table border="1">
     <tr>
         <th>ID</th>
+        <th>Picture</th>
         <th>Name</th>
         <th>Surname</th>
         <th>Email</th>
@@ -37,8 +38,16 @@ Students| <a href="/addStudents">Add student</a>
     <tr>
         <td><%=student.getId()%>
         </td>
+        <td>
+            <% if (student.getPicName() != null) { %>
+            <img src="/downloadImage?imageName=<%=student.getPicName()%>" width="50">
+            <%} else {%>
+            <span>No Picture</span>
+            <%}%>
+        </td>
         <td><%=student.getName()%>
         </td>
+
         <td><%=student.getSurname()%>
         </td>
         <td><%=student.getEmail()%>

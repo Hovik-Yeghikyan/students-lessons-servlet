@@ -31,13 +31,14 @@ Lessons| <a href="/addLessons">Add lesson</a>
         <th>Lecturer_Name</th>
         <th>Price</th>
         <th>Delete</th>
+        <th>Update</th>
     </tr>
    <% for (Lessons lesson : lessonsList) {%>
     <tr>
         <td><%=lesson.getId()%>
         </td>
-        <td><%=lesson.getName()%>
-        </td>
+        <td><a href="/singleLessons?id=<%=lesson.getId()%>">
+            <%=lesson.getName()%></a></td>
         <td><%=lesson.getDuration()%>
         </td>
         <td><%=lesson.getLecturerName()%>
@@ -46,6 +47,7 @@ Lessons| <a href="/addLessons">Add lesson</a>
         </td>
 
         <td><a href="/deleteLessons?id=<%=lesson.getId()%>">Delete</a></td>
+        <td><a href="/updateLessons?id=<%=lesson.getId()%>">Update</a></td>
     </tr>
     <% }
     %>
