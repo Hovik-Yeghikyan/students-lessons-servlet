@@ -4,6 +4,7 @@ import com.example.studentslessonsservlet.manager.LessonsManager;
 import com.example.studentslessonsservlet.manager.StudentsManager;
 import com.example.studentslessonsservlet.model.Lessons;
 import com.example.studentslessonsservlet.model.Students;
+import com.example.studentslessonsservlet.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -37,6 +38,8 @@ public class AddStudentsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        User user = (User) req.getSession().getAttribute("user");
         String name = req.getParameter("name");
         String surname = req.getParameter("surname");
         String email = req.getParameter("email");
@@ -55,6 +58,7 @@ public class AddStudentsServlet extends HttpServlet {
                 .age(age)
                 .picName(picName)
                 .lesson(lessonsManager.getLessonsById(lessonId))
+                .user(user)
                 .build());
         resp.sendRedirect("/students");
     }

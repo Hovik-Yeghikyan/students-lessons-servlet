@@ -10,7 +10,8 @@ import java.util.List;
 
 public class LessonsManager {
 
-    Connection connection = DBConnectionProvider.getInstance().getConnection();
+    private Connection connection = DBConnectionProvider.getInstance().getConnection();
+    private UserManager userManager = new UserManager();
 
     public List<Lessons> getAllLessons() {
         String sql = "SELECT * FROM lessons";
@@ -24,6 +25,7 @@ public class LessonsManager {
                         .duration(resultSet.getDouble("duration"))
                         .lecturerName(resultSet.getString("lecturer_name"))
                         .price(resultSet.getDouble("price"))
+                        .user(userManager.getUserById(resultSet.getInt("user_id")))
                         .build());
             }
         } catch (SQLException e) {
@@ -43,6 +45,7 @@ public class LessonsManager {
                         .duration(resultSet.getDouble("duration"))
                         .lecturerName(resultSet.getString("lecturer_name"))
                         .price(resultSet.getDouble("price"))
+                        .user(userManager.getUserById(resultSet.getInt("user_id")))
                         .build();
             }
         } catch (SQLException e) {
@@ -52,15 +55,16 @@ public class LessonsManager {
     }
 
     public void add(Lessons lessons) {
-        String sql = "INSERT INTO lessons(name,duration,lecturer_name,price) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO lessons(name,duration,lecturer_name,price,user_id) VALUES(?,?,?,?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, lessons.getName());
             preparedStatement.setDouble(2, lessons.getDuration());
             preparedStatement.setString(3, lessons.getLecturerName());
             preparedStatement.setDouble(4, lessons.getPrice());
+            preparedStatement.setInt(5, lessons.getUser().getId());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()){
+            if (generatedKeys.next()) {
                 int id = generatedKeys.getInt(1);
                 lessons.setId(id);
             }
@@ -69,11 +73,11 @@ public class LessonsManager {
         }
     }
 
-    public void deleteLesson(int id){
-        String sql = "DELETE FROM lessons WHERE id="+id;
-        try(Statement statement = connection.createStatement()){
+    public void deleteLesson(int id) {
+        String sql = "DELETE FROM lessons WHERE id=" + id;
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -86,7 +90,7 @@ public class LessonsManager {
             preparedStatement.setDouble(2, lesson.getDuration());
             preparedStatement.setString(3, lesson.getLecturerName());
             preparedStatement.setDouble(4, lesson.getPrice());
-            preparedStatement.setInt(5,lesson.getId());
+            preparedStatement.setInt(5, lesson.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

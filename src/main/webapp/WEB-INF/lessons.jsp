@@ -30,10 +30,12 @@ Lessons| <a href="/addLessons">Add lesson</a>
         <th>Duration</th>
         <th>Lecturer_Name</th>
         <th>Price</th>
+        <th>User Added</th>
         <th>Delete</th>
         <th>Update</th>
     </tr>
    <% for (Lessons lesson : lessonsList) {%>
+    <%if (request.getSession().getAttribute("user").equals(lesson.getUser())) {%>
     <tr>
         <td><%=lesson.getId()%>
         </td>
@@ -45,12 +47,15 @@ Lessons| <a href="/addLessons">Add lesson</a>
         </td>
         <td><%=lesson.getPrice()%>
         </td>
+        <td><%=lesson.getUser().getName() + " " + lesson.getUser().getSurname()%>
+        </td>
 
         <td><a href="/deleteLessons?id=<%=lesson.getId()%>">Delete</a></td>
         <td><a href="/updateLessons?id=<%=lesson.getId()%>">Update</a></td>
     </tr>
     <% }
     %>
+    <%}%>
 </table>
 <% }%>
 </body>

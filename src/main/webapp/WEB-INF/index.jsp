@@ -2,11 +2,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home Page</title>
+    <title>Login Page</title>
 </head>
 <body>
-<br/>
-<a href="/lessons">Lessons</a>
-<a href="/students">Students</a>
+<% if (session.getAttribute("msg") != null) {%>
+<span style="color: red"><%=session.getAttribute("msg")%></span>
+<% session.removeAttribute("msg");%>
+<%}%>
+
+<form action="/login" method="post">
+    email: <input type="text" name="email"/> <br>
+    password: <input type="password" name="password"> <br>
+    <input type="submit" value="login">
+</form>
+<br>
+<form action="/register" method="get">
+
+    <input style="color: green" type="submit" value="register">
+</form>
 </body>
 </html>

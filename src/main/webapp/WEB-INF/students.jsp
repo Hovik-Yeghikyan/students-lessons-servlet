@@ -32,9 +32,11 @@ Students| <a href="/addStudents">Add student</a>
         <th>Email</th>
         <th>Age</th>
         <th>Lesson</th>
+        <th>Student Added</th>
         <th>Delete</th>
     </tr>
     <% for (Students student : studentsList) {%>
+    <%if (request.getSession().getAttribute("user").equals(student.getUser())){%>
     <tr>
         <td><%=student.getId()%>
         </td>
@@ -56,11 +58,14 @@ Students| <a href="/addStudents">Add student</a>
         </td>
         <td><%=student.getLesson().getName()%>
         </td>
+        <td><%=student.getUser().getName() + " " + student.getSurname()%>
+        </td>
 
         <td><a href="/deleteStudents?id=<%=student.getId()%>">Delete</a></td>
     </tr>
     <% }
     %>
+    <%}%>
 </table>
 <% }%>
 </body>

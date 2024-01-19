@@ -2,6 +2,7 @@ package com.example.studentslessonsservlet.servlet;
 
 import com.example.studentslessonsservlet.manager.LessonsManager;
 import com.example.studentslessonsservlet.model.Lessons;
+import com.example.studentslessonsservlet.model.User;
 import com.example.studentslessonsservlet.util.DateUtil;
 
 import javax.servlet.ServletException;
@@ -26,6 +27,8 @@ public class AddLessonsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = (User) req.getSession().getAttribute("user");
+
         String lessonName = req.getParameter("name");
         double duration = Double.parseDouble(req.getParameter("duration"));
         String lecturerName = req.getParameter("lecturer_name");
@@ -35,6 +38,7 @@ public class AddLessonsServlet extends HttpServlet {
                 .duration(duration)
                 .lecturerName(lecturerName)
                 .price(price)
+                .user(user)
                 .build());
 
         resp.sendRedirect("/lessons");

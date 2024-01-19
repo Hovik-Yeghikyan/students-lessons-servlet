@@ -12,6 +12,7 @@ public class StudentsManager {
 
     private Connection connection = DBConnectionProvider.getInstance().getConnection();
     private LessonsManager lessonsManager = new LessonsManager();
+    private UserManager userManager = new UserManager();
 
     public List<Students> getAllStudents() {
         String sql = "SELECT * FROM students";
@@ -27,6 +28,7 @@ public class StudentsManager {
                         .age(resultSet.getInt("age"))
                         .picName(resultSet.getString("pic_name"))
                         .lesson(lessonsManager.getLessonsById(resultSet.getInt("lesson_id")))
+                        .user(userManager.getUserById(resultSet.getInt("user_id")))
                         .build());
             }
         } catch (SQLException e) {
@@ -37,14 +39,15 @@ public class StudentsManager {
     }
 
     public void add(Students student) {
-        String sql = "INSERT INTO students(name,surname,email,age,lesson_id,pic_name) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO students(name,surname,email,age,lesson_id,pic_name,user_id) VALUES(?,?,?,?,?,?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, student.getName());
             preparedStatement.setString(2, student.getSurname());
             preparedStatement.setString(3, student.getEmail());
             preparedStatement.setInt(4, student.getAge());
             preparedStatement.setInt(5, student.getLesson().getId());
-           preparedStatement.setString(6,student.getPicName());
+            preparedStatement.setString(6, student.getPicName());
+            preparedStatement.setInt(7, student.getUser().getId());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -65,6 +68,7 @@ public class StudentsManager {
             e.printStackTrace();
         }
     }
+
     public List<Students> getByLessonID(int studentID) {
         String sql = "SELECT * FROM students WHERE lesson_id=" + studentID;
         List<Students> students = new ArrayList<>();
@@ -78,6 +82,7 @@ public class StudentsManager {
                         .email(resultSet.getString("email"))
                         .picName(resultSet.getString("pic_name"))
                         .lesson(lessonsManager.getLessonsById(resultSet.getInt("lesson_id")))
+                        .user(userManager.getUserById(resultSet.getInt("user_id")))
                         .build());
             }
         } catch (SQLException e) {
