@@ -28,19 +28,25 @@ public class AddLessonsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
-
         String lessonName = req.getParameter("name");
         double duration = Double.parseDouble(req.getParameter("duration"));
         String lecturerName = req.getParameter("lecturer_name");
         double price = Double.parseDouble(req.getParameter("price"));
-        lessonsManager.add(Lessons.builder()
-                .name(lessonName)
-                .duration(duration)
-                .lecturerName(lecturerName)
-                .price(price)
-                .user(user)
-                .build());
+        Lessons lesson = lessonsManager.getLessonByName(lessonName);
+        if (lesson == null){
+            lessonsManager.add(Lessons.builder()
+                    .name(lessonName)
+                    .duration(duration)
+                    .lecturerName(lecturerName)
+                    .price(price)
+                    .user(user)
+                    .build());
 
-        resp.sendRedirect("/lessons");
+            resp.sendRedirect("/lessons");
+        }else {
+            req.getSession().setAttribute("msg", "Lesson is already exists");
+            resp.sendRedirect("/addLessons");
+        }
+
     }
 }

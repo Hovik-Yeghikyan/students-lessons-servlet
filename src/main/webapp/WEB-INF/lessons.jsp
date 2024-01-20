@@ -1,6 +1,7 @@
 <%@ page import="com.example.studentslessonsservlet.model.Lessons" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.studentslessonsservlet.util.DateUtil" %><%--
+<%@ page import="com.example.studentslessonsservlet.util.DateUtil" %>
+<%@ page import="com.example.studentslessonsservlet.model.User" %><%--
   Created by IntelliJ IDEA.
   User: Admin
   Date: 13.01.2024
@@ -35,7 +36,9 @@ Lessons| <a href="/addLessons">Add lesson</a>
         <th>Update</th>
     </tr>
    <% for (Lessons lesson : lessonsList) {%>
-    <%if (request.getSession().getAttribute("user").equals(lesson.getUser())) {%>
+    <%
+       User user =(User) request.getSession().getAttribute("user");
+        if (user.equals(lesson.getUser())) {%>
     <tr>
         <td><%=lesson.getId()%>
         </td>

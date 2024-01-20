@@ -11,6 +11,11 @@
     <title>Add Lessons</title>
 </head>
 <body>
+
+<% if (session.getAttribute("msg") != null) {%>
+<span style="color: red"><%=session.getAttribute("msg")%></span>
+<% session.removeAttribute("msg");%>
+<%}%>
 Add Lessons <br>
 <form method="post" action="/addLessons">
     Lesson Name: <input type="text" name="name"> <br>

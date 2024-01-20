@@ -97,6 +97,26 @@ public class LessonsManager {
         }
     }
 
+    public Lessons getLessonByName(String lessonName){
+        String sql = "SELECT * FROM lessons WHERE name= '" + lessonName + "'";
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                return Lessons.builder()
+                        .id(resultSet.getInt("id"))
+                        .name(resultSet.getString("name"))
+                        .duration(resultSet.getDouble("duration"))
+                        .lecturerName(resultSet.getString("lecturer_name"))
+                        .price(resultSet.getDouble("price"))
+                        .user(userManager.getUserById(resultSet.getInt("user_id")))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
 
 
